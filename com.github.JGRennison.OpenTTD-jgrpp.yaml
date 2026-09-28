@@ -1,6 +1,6 @@
 app-id: com.github.JGRennison.OpenTTD-jgrpp
 runtime: org.freedesktop.Platform
-runtime-version: '23.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 command: openttd
 rename-icon: openttd
@@ -20,30 +20,16 @@ modules:
     buildsystem: simple
     build-commands:
       - install -D -m 644 -t $FLATPAK_DEST/share/soundfonts OPL-3_FM_128M.sf2
+      - install -D -m 644 -t $FLATPAK_DEST/share/licenses/$FLATPAK_ID/opl3-soundfont LICENSE
       - ln -s $FLATPAK_DEST/share/soundfonts/{OPL-3_FM_128M,default}.sf2
     sources:
-      - type: file
-        url: https://github.com/Mindwerks/opl3-soundfont/releases/download/1.0/OPL-3_FM_128M.sf2
-        sha256: 39bff96eee3dcfbce9665e3968701b894ca2136c7d0bd580281b2bbf59e80392
-
-  - name: lzo
-    config-opts:
-      - --enable-shared
-      - --disable-static
-    cleanup:
-      - /include
-      - /lib/*.la
-      - /lib/pkgconfig
-      - /share
-    sources:
       - type: archive
-        url: https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz
-        sha256: c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072
+        url: https://gitlab.com/psi29a/opl3-soundfont/-/archive/1.1/opl3-soundfont-1.1.tar.gz
+        sha256: 990f2a1bc96c77892511e973beb97dc61e6aea9b5ff76af73999816bac7b45a1
         x-checker-data:
-          type: anitya
-          project-id: 1868
-          stable-only: true
-          url-template: https://www.oberhumer.com/opensource/lzo/download/lzo-$version.tar.gz
+          type: git
+          tag-pattern: '^([0-9.]+)$'
+          url-template: https://gitlab.com/psi29a/opl3-soundfont/-/archive/$version/opl3-soundfont-$version.tar.gz
 
   - name: openttd-jgrpp
     config-opts:
@@ -54,6 +40,8 @@ modules:
       - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t ${FLATPAK_DEST}/lib
       - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libsframe.so.* -t ${FLATPAK_DEST}/lib
     builddir: true
+    license-files:
+      - COPYING.md
     post-install:
       - install -D -m 644 -t $FLATPAK_DEST/share/icons/hicolor/scalable/apps ../media/openttd.svg
       - install -D -m 644 -t $FLATPAK_DEST/share/metainfo ../com.github.JGRennison.OpenTTD-jgrpp.metainfo.xml
@@ -77,8 +65,8 @@ modules:
       - mv opengfx-* $FLATPAK_DEST/share/games/openttd/baseset/opengfx
     sources:
       - type: archive
-        url: https://cdn.openttd.org/opengfx-releases/7.1/opengfx-7.1-all.zip
-        sha256: 928fcf34efd0719a3560cbab6821d71ce686b6315e8825360fba87a7a94d7846
+        url: https://cdn.openttd.org/opengfx-releases/8.0/opengfx-8.0-all.zip
+        sha256: 43a0c1dabf39cb865394f3a6cc36d4da5c10ecfaaf55652043104806810903be
         x-checker-data:
           type: anitya
           project-id: 9200
